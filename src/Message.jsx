@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 
 class Message extends Component {
 
-
   render() {
-    let message = this.props.msg
+    let message = this.props.msg;
 
     return (
-      <div className="message" key={this.props.msg.id}>
+      <div className="message" key={"yo"}>
         <span className="username">
           {message.username}
         </span>
