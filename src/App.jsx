@@ -34,10 +34,10 @@ class App extends Component {
   }
 
   updateMessages = (text) => {
-    console.log(text);
+    console.log("text", text);
     const newMessage = this.state.messages.concat(text)
     this.setState( {messages: newMessage} )
-    this.ws.send(text.content);
+    this.ws.send("User " + text.username +" said "+ text.content);
   }
 
   render() {
