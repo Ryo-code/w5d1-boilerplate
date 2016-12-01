@@ -1,14 +1,19 @@
 import React, {Component} from 'react';
 
 class Message extends Component {
-  render() {
-    console.log("Rendering <Message/>");
-    return (
-      <div className="message">
-        <span className="username">Anonymous1</span>
-        <span className="content">I won't be impressed with technology until I can download food.</span>
-      </div>
 
+
+  render() {
+    let message = this.props.msg
+
+    return (
+      <div className="message" key={this.props.msg.id}>
+        <span className="username">
+          {message.username}
+        </span>
+        {/* the "message.username" is the same as "this.props.msg.username" */}
+        <span className="content">{message.content}</span>
+      </div>
     );
   }
 }

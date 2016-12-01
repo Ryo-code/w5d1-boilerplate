@@ -6,10 +6,11 @@ class MessageList extends Component {
     console.log("Rendering <MessageList/>");
     return (
       <div id="message-list">
-        <Message/>
-        <div className="message system">
-          Anonymous1 changed their name to nomnom.
-        </div>
+        {
+          this.props.messagesForReference.map((message) => {
+            return <Message msg={message} key={message.id}/>;
+          })
+        }
       </div>
     );
   }
