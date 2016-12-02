@@ -3,8 +3,8 @@ import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 
 /* * * * * * * ES Version Comparison * * * * * * * * * * * *
-//ES5: "var App = React.createClass({render: function(){console.log("hi")} });"...
-//ES6: "class App extends React.Component { render(){console.log("hi")} }"...
+//ES5: "var App = React.createClass({render: function(){console.log("hi")} });"
+//ES6: "class App extends React.Component { render(){console.log("hi")} }"
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class App extends Component {
@@ -59,7 +59,7 @@ class App extends Component {
             <h1>Chatty</h1>
           </nav>
           <MessageList messagesForReference={this.state.messages}/>
-          <ChatBar currentUser={this.state.currentUser.name} messages={this.state.messages} submitButton={this.updateMessages}/>
+          <ChatBar currentUser={this.state.currentUser.name} messages={this.state.messages} updateMessagesFunc={this.updateMessages}/>
         </div>
       );
     }

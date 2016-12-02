@@ -26,7 +26,9 @@ wss.on('connection', (ws) => {  // Set up a callback that will run when a client
       message.type = "incomingMessage";
       wss.broadcast(JSON.stringify(message))
         break;
+      case "":
 
+          break;
       default:
 
     }
