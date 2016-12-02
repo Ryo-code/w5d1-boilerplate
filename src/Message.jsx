@@ -6,7 +6,7 @@ class Message extends Component {
     let message = this.props.msg;
 
     return (
-      <div className="message" key={"yo"}>
+      <div className="message" key={message.id}>
         <span className="username">
           {message.username}
         </span>

@@ -14,11 +14,17 @@ class Chatbar extends Component {
     console.log(this.state);
   }
 
-  onSubmitMsg = (ev) => {
+  onNameChange = (ev) => {
+    this.setState( {username: ev.target.value} );
+    console.log(this.state);
+  }
+
+  onSubmitBtn = (ev) => {
     ev.preventDefault();
     this.props.submitButton({
       username: this.state.username,
-      content: this.state.message
+      content: this.state.message,
+      type: "postMessage"
     })
     this.setState({message: ""});
   }
@@ -28,8 +34,8 @@ class Chatbar extends Component {
     console.log("Rendering <ChatBar/>");
     return (
       <footer>
-        <form onSubmit={this.onSubmitMsg.bind(this)}>
-          <input id="username" type="text" placeholder="Your Name (Optional)" value={ currentUser } />
+        <form onSubmit={this.onSubmitBtn.bind(this)}>
+          <input id="username" type="text" onChange={this.onNameChange} placeholder="Your Name (Optional)" value={this.state.username} />
           <input id="new-message" type="text" onChange={this.onMsgChange} placeholder="Type a message and hit ENTER" value={this.state.message}/>
           <input id="submit-button" type="submit"/>
         </form>

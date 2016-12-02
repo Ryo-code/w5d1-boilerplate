@@ -8,13 +8,12 @@ import MessageList from './MessageList.jsx';
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class App extends Component {
-
   constructor(props) {
     super(props); // pass the props to React.Component (i.e. the parent class of this component)
     this.state = { // setup the default state for the app
       currentUser: {
-        name: "Bob"
-      }, // optional. if currentUser is not defined, it means the user is Anonymous
+        name: "Anonymous"
+      },
       messages: []
     };
   }
@@ -22,27 +21,47 @@ class App extends Component {
   componentDidMount() {
     this.ws = new WebSocket("ws://localhost:5000");
 
+    this.ws.onopen = (event) => {
+      console.log("Connected to server");
+    };
+
+    this.ws.onmessage = (event) => {
+      const dataFromServer = JSON.parse(event.data)
+      console.log(dataFromServer);
+
+      switch (dataFromServer.type) {
+        case "incomingMessage":
+        const newMessage = this.state.messages.concat(dataFromServer);
+        this.setState({messages: newMessage})
+          break;
+
+        case "incomingNotification": //name
+          // handle incoming notification...........
+          break;
+
+        default:
+          // show an error in the console if the message type is unknown.....
+          throw new Error("Unknown event type " + dataFromServer.type);
+
+      }
+    }
   }
 
-  updateMessages = (text) => {
-    console.log("text", text);
-    const newMessage = this.state.messages.concat(text)
-    this.setState( {messages: newMessage} )
-    this.ws.send(JSON.stringify(text));
-  }
+    updateMessages = (text) => {
+      this.ws.send(JSON.stringify(text));
+    }
 
-  render() {
-    console.log("Rendering <App/>");
-    return (
-      <div className="wrapper">
-        <nav>
-          <h1>Chatty</h1>
-        </nav>
-        <MessageList messagesForReference={this.state.messages}/>
-        <ChatBar currentUser={this.state.currentUser.name} messages={this.state.messages}
-          submitButton={this.updateMessages}/>
-      </div>
-    );
-  }
-}
-export default App;
+    render() {
+      console.log("Rendering <App/>");
+      return (
+        <div className="wrapper">
+          <nav>
+            <h1>Chatty</h1>
+          </nav>
+          <MessageList messagesForReference={this.state.messages}/>
+          <ChatBar currentUser={this.state.currentUser.name} messages={this.state.messages} submitButton={this.updateMessages}/>
+        </div>
+      );
+    }
+};
+  export default App;
