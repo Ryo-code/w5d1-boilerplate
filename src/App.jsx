@@ -11,10 +11,9 @@ class App extends Component {
   constructor(props) {
     super(props); // pass the props to React.Component (i.e. the parent class of this component)
     this.state = { // setup the default state for the app
-      currentUser: {
-        name: "Anonymous"
-      },
-      messages: []
+      currentUser: {name: "Anonymous"},
+      messages: [],
+      statement: ""
     };
   }
 
@@ -31,37 +30,74 @@ class App extends Component {
 
       switch (dataFromServer.type) {
         case "incomingMessage":
-        const newMessage = this.state.messages.concat(dataFromServer);
-        this.setState({messages: newMessage})
+          const newMessage = this.state.messages.concat(dataFromServer);
+          this.setState({messages: newMessage})
           break;
 
         case "incomingNotification": //name
-          // handle incoming notification...........
+          console.log("dataFromServer.content-->", dataFromServer.content);
+          this.setState({statement: dataFromServer.content})
           break;
-
+        case "onlineUsers":
+          this.setState({onlineUsers: dataFromServer.howMany})
+          break;
         default:
           // show an error in the console if the message type is unknown.....
           throw new Error("Unknown event type " + dataFromServer.type);
-
       }
     }
   }
 
-    updateMessages = (text) => {
-      this.ws.send(JSON.stringify(text));
-    }
+  changeUsername = (newUser) => {
 
-    render() {
-      console.log("Rendering <App/>");
-      return (
-        <div className="wrapper">
-          <nav>
-            <h1>Chatty</h1>
-          </nav>
-          <MessageList messagesForReference={this.state.messages}/>
-          <ChatBar currentUser={this.state.currentUser.name} messages={this.state.messages} updateMessagesFunc={this.updateMessages}/>
-        </div>
-      );
+
+    let prevUser = this.state.currentUser.name;
+
+    this.setState({currentUser:{name: newUser }})
+
+    //
+    // console.log('prev', prevUser, 'next', newUser)
+    // if (prevUser != newUser) {
+    //   prevUser = newUser;
+    //
+    // } else {
+    //   this.setState({prevUser});
+    // }
+    const sendNotification = {
+      type: "postNotification",
+      content: `${prevUser} changed their name to ${newUser}`
     }
+    this.ws.send(JSON.stringify(sendNotification));
+    this.setState({
+      currentUser: {
+        name: newUser
+      }
+    })
+  }
+
+  updateMessages = (text) => {
+    this.ws.send(JSON.stringify(text));
+    console.log("text be here~~~~!", text);
+  }
+
+  render() {
+    console.log("Rendering <App/>");
+    return (
+      <div className="wrapper">
+        <nav>
+          <h1>Chatty</h1>
+          <span> {this.state.onlineUsers} </span>
+        </nav>
+        <MessageList messagesForReference={this.state.messages}
+        changeNameStatement={this.state.statement}/>
+        <ChatBar
+          currentUser={this.state.currentUser.name}
+          messages={this.state.messages}
+          updateMessagesFunc={this.updateMessages}
+          changeUsername={this.changeUsername}
+        />
+      </div>
+    );
+  }
 };
-  export default App;
+export default App;

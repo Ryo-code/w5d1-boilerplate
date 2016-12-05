@@ -9,6 +9,7 @@ html, body {
 }
 
 nav {
+    display: flex;
     height: 40px;
     padding: 8px;
     border-bottom: 1px solid black;
@@ -51,11 +52,8 @@ nav h1 {
     font-style: italic;
 }
 
-form {
-  display: flex;
-}
-
 footer {
+  display: flex;
     height: 41px;
     border-top: 1px solid black;
     background-color: rgba(202, 139, 241, 0.76);
@@ -75,6 +73,10 @@ footer #username {
 
 footer #new-message {
     flex: 7;
+}
+
+span {
+  margin-left: auto;
 }
 
 #submit-button {

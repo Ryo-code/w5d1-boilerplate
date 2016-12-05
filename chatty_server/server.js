@@ -12,6 +12,10 @@ const uuidV4 = require('uuid/v4');
 wss.on('connection', (ws) => {  // Set up a callback that will run when a client connects to the server
   console.log('Client connected'); // When a client connects they are assigned a socket, represented by the ws parameter in the callback.
 
+  let online_users = {howMany: `${wss.clients.length} user(s) online`,
+type: "onlineUsers"}
+  wss.broadcast(JSON.stringify(online_users));
+
   ws.on('message', function newMessage (msg){
     console.log("UNPARSED message:", msg);
     const message = JSON.parse(msg)
@@ -22,12 +26,13 @@ wss.on('connection', (ws) => {  // Set up a callback that will run when a client
 
     switch (message.type) {
       case "postMessage":
-      message['id'] = uuidV4();
-      message.type = "incomingMessage";
-      wss.broadcast(JSON.stringify(message))
+        message.id = uuidV4();
+        message.type = "incomingMessage";
+        wss.broadcast(JSON.stringify(message))
         break;
-      case "":
-
+      case "postNotification":
+        message.type = "incomingNotification"
+        wss.broadcast(JSON.stringify(message))
           break;
       default:
 
