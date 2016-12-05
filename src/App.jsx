@@ -42,7 +42,6 @@ class App extends Component {
           this.setState({onlineUsers: dataFromServer.howMany})
           break;
         default:
-          // show an error in the console if the message type is unknown.....
           throw new Error("Unknown event type " + dataFromServer.type);
       }
     }
@@ -55,14 +54,6 @@ class App extends Component {
 
     this.setState({currentUser:{name: newUser }})
 
-    //
-    // console.log('prev', prevUser, 'next', newUser)
-    // if (prevUser != newUser) {
-    //   prevUser = newUser;
-    //
-    // } else {
-    //   this.setState({prevUser});
-    // }
     const sendNotification = {
       type: "postNotification",
       content: `${prevUser} changed their name to ${newUser}`

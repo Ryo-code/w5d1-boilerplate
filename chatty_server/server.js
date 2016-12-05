@@ -19,10 +19,6 @@ type: "onlineUsers"}
   ws.on('message', function newMessage (msg){
     console.log("UNPARSED message:", msg);
     const message = JSON.parse(msg)
-    // message['id'] = uuidV4();
-    // console.log("Full parsed message with cray-cray ID:", message);
-    // console.log("User " + message.username + " said "+ message.content);
-    // wss.broadcast(JSON.stringify(message))
 
     switch (message.type) {
       case "postMessage":
